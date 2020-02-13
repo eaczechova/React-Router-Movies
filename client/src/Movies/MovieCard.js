@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 const MovieCard = props => {
 	const [movies, setMovies] = useState();
 	const param = props.location.pathname.slice(-1);
-	console.log(param);
 	const api =
 		param !== '/'
 			? `http://localhost:5000/api/movies/${param}/`
@@ -16,7 +15,6 @@ const MovieCard = props => {
 			axios
 				.get(api)
 				.then(response => {
-					console.log(response.data);
 					setMovies(response.data);
 				})
 				.catch(error => {
@@ -46,32 +44,38 @@ const MovieCard = props => {
 			</div>
 		);
 	}
-};
-
-function MovieDetails({ movie }) {
-	const { title, director, metascore, stars } = movie;
-	return (
-		<div className="save-wrapper">
-			<Link to={`/movies/${movie.id}`}>
-				<div className="movie-card">
-					<h2>{title}</h2>
-					<div className="movie-director">
-						Director: <em>{director}</em>
-					</div>
-					<div className="movie-metascore">
-						Metascore: <strong>{metascore}</strong>
-					</div>
-					<h3>Actors</h3>
-
-					{stars.map(star => (
-						<div key={star} className="movie-star">
-							{star}
+	function MovieDetails({ movie }) {
+		const saveMovie = () => {
+			const addToSavedList = props.addToSavedList;
+			addToSavedList(movie);
+		};
+		const { title, director, metascore, stars } = movie;
+		return (
+			<div className="save-wrapper">
+				<Link to={`/movies/${movie.id}`}>
+					<div className="movie-card">
+						<h2>{title}</h2>
+						<div className="movie-director">
+							Director: <em>{director}</em>
 						</div>
-					))}
-				</div>
-			</Link>
-		</div>
-	);
-}
+						<div className="movie-metascore">
+							Metascore: <strong>{metascore}</strong>
+						</div>
+						<h3>Actors</h3>
+
+						{stars.map(star => (
+							<div key={star} className="movie-star">
+								{star}
+							</div>
+						))}
+						<button className="save-button" onClick={() => saveMovie()}>
+							Save
+						</button>
+					</div>
+				</Link>
+			</div>
+		);
+	}
+};
 
 export default MovieCard;
