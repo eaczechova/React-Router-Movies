@@ -45,6 +45,7 @@ const MovieCard = props => {
 		);
 	}
 	function MovieDetails({ movie }) {
+		console.log('movie', movie);
 		const saveMovie = () => {
 			const addToSavedList = props.addToSavedList;
 			addToSavedList(movie);
